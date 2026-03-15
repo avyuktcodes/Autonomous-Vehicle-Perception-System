@@ -1,75 +1,70 @@
-This repository **"Object and lane detection with yolov5 Model"** is based on the open-source yolov5 model, and the function of lane detection is developed by some digital image processing methods, especially the Hough transformation.  **The yolov5 code, mostly references to ultralytics's repository (thanks to 
-Ultralytics) https://github.com/ultralytics/yolov5 , a part of which is based on my own adjustment, subject to modification or deletion without notice. Use at your own risk.**
+This project develops a real-time perception system for autonomous vehicles by integrating lane detection and object detection techniques. The system processes video input from a camera or recorded footage to identify road lanes and detect surrounding objects such as vehicles and pedestrians. Lane detection is implemented using computer vision techniques with **OpenCV**, which applies image processing methods such as edge detection, region of interest masking, and Hough transforms to determine lane boundaries. For object detection, the system utilizes the deep learning model **YOLOv5** built on the **PyTorch** platform to recognize and classify objects in real time. The combined perception pipeline enables the system to understand the driving environment by simultaneously identifying road structure and dynamic obstacles. This project demonstrates core concepts used in modern autonomous driving systems and provides a practical implementation of computer vision and deep learning techniques for intelligent transportation and driver-assistance applications.
 
-## Sample running of this integrated detection
+# Integrated Object & Lane Detection (YOLOv5 Optimized)
 
-[![Watch the video](https://img.youtube.com/vi/kytAdEwluh0/0.jpg)](https://www.youtube.com/watch?v=kytAdEwluh0)
-[![Watch the video](https://img.youtube.com/vi/m4a_l07OBoA/0.jpg)](https://www.youtube.com/watch?v=m4a_l07OBoA)
-[![Watch the video](https://img.youtube.com/vi/39NtR3_zZOU/0.jpg)](https://www.youtube.com/watch?v=39NtR3_zZOU)
+An optimized computer vision pipeline that combines **YOLOv5 real-time object detection** with **Hough Transform-based lane tracking**. This repository has been specifically refactored to support **Python 3.13+**, **NumPy 2.0+**, and **Apple Silicon (M1/M2/M3)** environments.
 
-## YOLOv5 model's Performance
+## 🚀 Key Modernizations (My Contributions)
+Unlike the original legacy versions, this repository includes critical patches to run on the latest Python stacks:
+*   **Python 3.13 Support:** Fixed the `ModuleNotFoundError: No module named 'pkg_resources'` by bypassing legacy `setuptools` checks.
+*   **NumPy 2.0 Compatibility:** Resolved `AttributeError` for deprecated `np.int` and `np.trapz` (updated to `int` and `np.trapezoid`).
+*   **PyTorch 2.6+ Security Fixes:** Patched `torch.load` calls with `weights_only=False` to allow loading legacy `.pt` and `.cache` files safely.
+*   **macOS Optimization:** Configured for seamless execution on MacBook Air/Pro via CPU/MPS backends.
 
-<details>
-<summary>Figure Comparison with other Networks</summary>
-<p align="center"><img width="800" src="https://user-images.githubusercontent.com/26833433/114313216-f0a5e100-9af5-11eb-8445-c682b60da2e3.png"></p>
+## 🛠 Features
+*   **Object Detection:** Identifies 80+ classes (cars, pedestrians, traffic lights) using the YOLOv5s architecture.
+*   **Lane Detection:** Real-time lane line extraction using Grayscale conversion, Gaussian Blur, Canny Edge Detection, and Hough Line Transformation.
+*   **Integrated Inference:** A unified pipeline that draws both bounding boxes and lane overlays on a single video stream.
 
-### Pretrained Checkpoints
-[assets]: https://github.com/ultralytics/yolov5/releases
+## 💻 Installation
 
-Model |size<br><sup>(pixels) |mAP<sup>val<br>0.5:0.95 |mAP<sup>test<br>0.5:0.95 |mAP<sup>val<br>0.5 |Speed<br><sup>V100 (ms) | |params<br><sup>(M) |FLOPS<br><sup>640 (B)
----   |---  |---        |---         |---             |---                |---|---              |---
-[YOLOv5s][assets]    |640  |36.7     |36.7     |55.4     |**2.0** | |7.3   |17.0
-[YOLOv5m][assets]    |640  |44.5     |44.5     |63.3     |2.7     | |21.4  |51.3
-[YOLOv5l][assets]    |640  |48.2     |48.2     |66.9     |3.8     | |47.0  |115.4
-[YOLOv5x][assets]    |640  |**50.4** |**50.4** |**68.8** |6.1     | |87.7  |218.8
-| | | | | | || |
-[YOLOv5s6][assets]   |1280 |43.3     |43.3     |61.9     |**4.3** | |12.7  |17.4
-[YOLOv5m6][assets]   |1280 |50.5     |50.5     |68.7     |8.4     | |35.9  |52.4
-[YOLOv5l6][assets]   |1280 |53.4     |53.4     |71.1     |12.3    | |77.2  |117.7
-[YOLOv5x6][assets]   |1280 |**54.4** |**54.4** |**72.0** |22.4    | |141.8 |222.9
-| | | | | | || |
-[YOLOv5x6][assets] TTA |1280 |**55.0** |**55.0** |**72.0** |70.8 | |-  |-
-</details>
+1. **Clone the Repository:**
+   ```bash
+   git clone https://github.com
+   cd YOLOv5-with-Lane-Detection
+Use code with caution.
 
-## Requirements
+Create a Virtual Environment:
+bash
+python3 -m venv venv
+source venv/bin/activate
+Use code with caution.
 
-Python 3.8 or later with all [requirements.txt](https://github.com/ultralytics/yolov5/blob/master/requirements.txt) dependencies installed, including `torch>=1.7`. To install run:
-```bash
-$ pip install -r requirements.txt
-```
+Install Dependencies:
+bash
+pip install -r requirements.txt
+pip install setuptools pandas tqdm requests
+Use code with caution.
 
+🏃 Usage
+Run on Video
+bash
+python detect.py --source runs/video/Drive_01.mp4 --device cpu
+Use code with caution.
 
-## Tutorials
+Run on Webcam
+bash
+python detect.py --source 0 --device cpu
+Use code with caution.
 
-see repository https://github.com/ultralytics/yolov5
+View Results
+Detection outputs, including processed videos and statistical charts, are automatically saved to:
+runs/detect/exp_detect/
 
+📊 Performance
+Model	Size	mAP@.5	Speed (MacBook Air CPU)
+YOLOv5s	640	55.4	~130ms / frame
 
-## Environments
+📜 Acknowledgments & Licensing
+Object Detection Core: Ultralytics YOLOv5 (GPL-3.0 License).
+Lane Detection: Based on Digital Image Processing (DIP) principles and Hough Transform.
+Maintenance: Modernized and patched by:
 
-YOLOv5 may be run in any of the following up-to-date verified environments (with all dependencies including [CUDA](https://developer.nvidia.com/cuda)/[CUDNN](https://developer.nvidia.com/cudnn), [Python](https://www.python.org/) and [PyTorch](https://pytorch.org/) preinstalled):
+```markdown
+## 👤 Author
 
-- **Google Colab and Kaggle** notebooks with free GPU: <a href="https://colab.research.google.com/github/ultralytics/yolov5/blob/master/tutorial.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a> <a href="https://www.kaggle.com/ultralytics/yolov5"><img src="https://kaggle.com/static/images/open-in-kaggle.svg" alt="Open In Kaggle"></a>
-- **Google Cloud** Deep Learning VM. See [GCP Quickstart Guide](https://github.com/ultralytics/yolov5/wiki/GCP-Quickstart)
-- **Amazon** Deep Learning AMI. See [AWS Quickstart Guide](https://github.com/ultralytics/yolov5/wiki/AWS-Quickstart)
-- **Docker Image**. See [Docker Quickstart Guide](https://github.com/ultralytics/yolov5/wiki/Docker-Quickstart) <a href="https://hub.docker.com/r/ultralytics/yolov5"><img src="https://img.shields.io/docker/pulls/ultralytics/yolov5?logo=docker" alt="Docker Pulls"></a>
+**Avyukt**
+*   GitHub:  (https://github.com/avyuktcodes)
+*   Project: (https://github.com/avyuktcodes/Autonomous-Vehicle-Perception-System)
 
-
-## Inference
-
-`detect.py` runs inference on a variety of sources, downloading models automatically from the [latest YOLOv5 release](https://github.com/ultralytics/yolov5/releases) and saving results to `runs/detect`.
-```bash
-$ python detect.py --source 0  # webcam
-                            file.jpg  # image 
-                            file.mp4  # video
-                            path/  # directory
-                            path/*.jpg  # glob
-                            'https://youtu.be/NUsoVlDFqZg'  # YouTube video
-                            'rtsp://example.com/media.mp4'  # RTSP, RTMP, HTTP stream
-```
-
-## Citation
-
-**yolov5 model** https://github.com/ultralytics/yolov5
-
-**lane detection** www.bilibili.com/video/BV1qk4y1r7jw
-
+Feel free to star ⭐ this repository if you found it helpful!
